@@ -42,13 +42,15 @@ public class MeetingRoomController {
     }
 
     void checkParameter(BookingRequestParam param) {
-        if ( 48 >= param.getStartTime() + param.getDuration() ) {
+		log.debug("start: {}, duration: {}", param.getStartTime(), param.getDuration());
+        if ( 48 <= ( param.getStartTime() + param.getDuration() ) ) {
             throw new InvalidParameterException("회의 종료시간은 하루를 넘어갈 수 없습니다.");
         }
         if ( param.getDuration() == 0 ) {
             throw new InvalidParameterException("종료시간을 다시 확인바랍니다.");
         }
-        if ( param.getFromDate().before(param.getToDate()) ) {
+		log.debug("from: {}, to: {}, {}", param.getFromDate(), param.getToDate(), param.getFromDate().after(param.getToDate()));
+        if ( param.getFromDate().after(param.getToDate()) ) {
             throw new InvalidParameterException("종료날짜를 다시 확인바랍니다.");
         }
         if ( StringUtils.isEmpty(param.getDescription()) ) {
