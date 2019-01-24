@@ -49,10 +49,9 @@ public class BookRequestParam {
 - Gradle 5.1
 
 ## 실행 방법
-1 https://github.com/KimSeokWon/mrb.git 에서 소스를 다운 받는다.
-2 소스를 다운 받은 위치로 이동하여 아래와 같이 빌드 및 실행한다. 
+1. https://github.com/KimSeokWon/mrb.git 에서 소스를 다운 받는다.
+2. 소스를 다운 받은 위치로 이동하여 아래와 같이 빌드 및 실행한다. 
 ```
 %YOUR_PATH%> gradle bootRun 
 ```
-
-마지막으로 브라우저에서 http://localhost:8080 으로 실행한다.
+3. 마지막으로 브라우저에서 http://localhost:8080 으로 실행한다.
