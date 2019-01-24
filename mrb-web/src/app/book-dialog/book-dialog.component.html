@@ -1,0 +1,74 @@
+<mat-card class="popup-card">
+  <mat-card-title>
+    <h1>{{dialogTitle}}</h1>
+  </mat-card-title>
+
+  <mat-card-content [formGroup]="form">
+  <mat-form-field class="full-width">
+    <input matInput [matDatepicker]="startPick"
+           placeholder="예약일을 선택하세요."
+           formControlName="from" required>
+    <mat-datepicker-toggle matSuffix [for]="startPick"></mat-datepicker-toggle>
+    <mat-datepicker #startPick></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field class="select-time">
+    <mat-select placeholder="회의실" formControlName="room" required>
+      <mat-option>--</mat-option>
+      <mat-option *ngFor="let room of meetingRooms$ | async" [value]="room.meetingRoomId">
+        {{room.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="select-time">
+    <mat-select placeholder="시작시간" formControlName="tt" required>
+      <mat-option *ngFor="let time of timeTable$ | async" [value]="time.time">
+        {{time.timeValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="select-time">
+    <mat-select placeholder="종료시간" formControlName="dur" required>
+      <ng-container *ngFor="let time of timeTable$ | async as timeTable">
+        <!--<mat-option *ngFor="let time of timeTable$ | async" [value]="time.time">-->
+          <!--{{time.durationValue}}-->
+        <!--</mat-option>  -->
+        <mat-option  [value]="time.time" *ngIf="(form.get('tt').value + time.time < 48)">
+        {{timeTable[form.get('tt').value+time.time].timeValue}}({{time.durationValue}} )
+        </mat-option>
+      </ng-container>
+
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <input matInput placeholder="예약자명" formControlName="desc" required>
+    <mat-hint>2자 이상을 입력하세요.</mat-hint>
+    <mat-error *ngIf="form.get('desc').hasError('required')">예약자명을 입력해 주셔야 합니다.</mat-error>
+  </mat-form-field>
+  <div class="toggle-title">
+    반복할 요일을 선택하세요
+  </div>
+  <mat-button-toggle-group multiple="true" formControlName="cron">
+    <mat-button-toggle *ngFor="let code of week_code" [value]="code" class="toggle-btn">{{code}}</mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <mat-form-field class="full-width">
+    <input required matInput [matDatepicker]="finishPicker" placeholder="종료일을 선택하세요." formControlName="to" [value]="form.get('from').value" [min]="form.get('to').value">
+    <mat-datepicker-toggle matSuffix [for]="finishPicker" ></mat-datepicker-toggle>
+    <mat-datepicker  #finishPicker></mat-datepicker>
+    <mat-error *ngIf="form.get('from').value > form.get('to').value">시작일보다 크거나 커야 합니다.</mat-error>
+  </mat-form-field>
+    <label class="error" *ngIf="errorIsShown">{{errorMsg}}</label>
+  </mat-card-content>
+<mat-card-actions class="button-group">
+  <button mat-button color="primary" (click)="save()">
+    <mat-icon>check</mat-icon>SAVE
+  </button>
+  <button mat-button (click)="delete()" *ngIf="data">
+    <mat-icon>delete</mat-icon>DELETE
+  </button>
+  <button mat-button (click)="cancel()">
+    <mat-icon>cancel</mat-icon>CANCEL
+  </button>
+</mat-card-actions>
+</mat-card>

@@ -63,6 +63,7 @@ public class BookRequestParam {
 ### 참고사항
 웹소스는 ./mrb-web 에 있다. 해당 디렉토리로 들어가서 
 ```aidl
+CL> npm install // libaaries installation 
 C:> ng build --prod 
 ```
 와 같이 프로덕션 모드로 빌드를 하면 되며, 빌드된 파일은 ```./mrb-web/dist/mrb-web``` 에 존재하며 모든 파일을 ```./src/main/resources/META-INF/resources``` 하위에 복사하면 된다.

@@ -1,0 +1,36 @@
+<div class="date-picker">
+  <button mat-icon-button (click)="goBack()"><mat-icon>arrow_back_ios</mat-icon></button>
+  <mat-form-field appearance="outline">
+    <input matInput [matDatepicker]="picker" placeholder="Choose a date" [formControl]="startDate"
+           (dateInput)="addEvent('input', $event)" (dateChange)="addEvent('change', $event)" readonly>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker startView="month" ></mat-datepicker>
+  </mat-form-field>
+  <button mat-icon-button (click)="goForward()"><mat-icon>arrow_forward_ios</mat-icon></button>
+</div>
+<ng-container *ngIf="loadingFinish">
+  <div class="mat-elevation-z8 tbl-container">
+    <table border="1px" class="full-width-table" aria-label="Elements">
+      <thead>
+      <tr >
+        <th ></th>
+        <th *ngFor="let room of meetingRoom" [id]="room.meetingRoomId">{{room.name}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr  *ngFor="let time of timeTable" [ngClass]="time.time %2 == 0 ? 'even': 'odd'">
+        <th [id]="time.time">
+          {{time.time %2 == 0 ? time.timeValue: ''}}
+        </th>
+        <td  *ngFor="let room of meetingRoom" [ngClass]="(dataSource[time.time][room.meetingRoomId] != null ? 'fill-booking' : 'none-booking')"
+          (click)="openModifyWindow(dataSource[time.time][room.meetingRoomId])">
+          <div>
+          {{(dataSource[time.time][room.meetingRoomId]?.startTime == time.time) ? dataSource[time.time][room.meetingRoomId].desc : ' '}}
+            {{((dataSource[time.time][room.meetingRoomId]?.startTime == time.time) && dataSource[time.time][room.meetingRoomId]?.cnt > 1) ? '('+dataSource[time.time][room.meetingRoomId].cnt + ')' : ''}}
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-container>

@@ -1,0 +1,27 @@
+.full-width-table {
+  width: 100%;
+  position: relative;
+  tr {
+    th, td {
+      padding: 0;
+      div {
+        min-height: 1.2rem;
+      }
+      border: 1px solid dimgray;
+    }
+  }
+}
+table {
+  border: 0;
+  border-collapse:collapse;
+}
+
+.fill-booking {
+  background-color: greenyellow;
+  cursor: pointer;
+}
+
+.date-picker {
+  width: 100%;
+  text-align: center;
+}

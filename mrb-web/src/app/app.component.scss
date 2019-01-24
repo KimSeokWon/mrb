@@ -1,0 +1,9 @@
+.mat-toolbar {
+  display: flex;
+  .title {
+    flex: 1 1 auto;
+  }
+  .mat-icon-button {
+    width: unset;
+  }
+}
