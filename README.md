@@ -43,4 +43,16 @@ public class BookRequestParam {
 - **일별 예약일** : 일별 예약 정보를 조회할때 사용
 - **코드(타임코드, 회의실코드)** : 파라미터에 대한 설명이나 브라우저에 전달하여 브라우저가 테이블을 그릴때 표출
 
+## 개발 및 빌드 환경
+- Rest API Server: JAVA 1.8, Spring Boot 2.1, H2 DB, Tomcat container
+- Angular 7, Angular material
+- Gradle 5.1
 
+## 실행 방법
+1 https://github.com/KimSeokWon/mrb.git 에서 소스를 다운 받는다.
+2 소스를 다운 받은 위치로 이동하여 아래와 같이 빌드 및 실행한다. 
+```
+%YOUR_PATH%> gradle bootRun 
+```
+
+마지막으로 브라우저에서 http://localhost:8080 으로 실행한다.
