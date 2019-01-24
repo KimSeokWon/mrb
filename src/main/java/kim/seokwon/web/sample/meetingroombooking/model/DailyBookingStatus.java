@@ -56,6 +56,8 @@ public class DailyBookingStatus implements Serializable {
     @Column(name="ROOM_ID")
     private Long        roomId;
 
+    private int         cnt;
+
     public DailyBookingStatus(ZonedDateTime date, int startTime, int endTime, String desc, Long requestId, Long roomId) {
         this.date           = date;
         this.startTime      = startTime;

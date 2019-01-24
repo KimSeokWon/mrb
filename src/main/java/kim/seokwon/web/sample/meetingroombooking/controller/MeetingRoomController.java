@@ -7,14 +7,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.InvalidParameterException;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
-@CrossOrigin(value="http://localhost4200")
-@RestController(value="/resources/meeting-room")
+@CrossOrigin("*")
+@RestController
+@RequestMapping("/resources/meeting-room")
 public class MeetingRoomController {
 
     private final MeetingRoomService meetingRoomService;
@@ -35,9 +37,24 @@ public class MeetingRoomController {
     @PostMapping(value="/create", consumes = "application/json")
     public @ResponseBody
     BookingRequestParam createRecord(@RequestBody BookingRequestParam param) throws Exception {
+        checkParameter(param);
         return meetingRoomService.registerRoomParam(param);
     }
 
+    void checkParameter(BookingRequestParam param) {
+        if ( 48 >= param.getStartTime() + param.getDuration() ) {
+            throw new InvalidParameterException("회의 종료시간은 하루를 넘어갈 수 없습니다.");
+        }
+        if ( param.getDuration() == 0 ) {
+            throw new InvalidParameterException("종료시간을 다시 확인바랍니다.");
+        }
+        if ( param.getFromDate().before(param.getToDate()) ) {
+            throw new InvalidParameterException("종료날짜를 다시 확인바랍니다.");
+        }
+        if ( StringUtils.isEmpty(param.getDescription()) ) {
+            throw new InvalidParameterException("예약자명을 확인바랍니다.");
+        }
+    }
     /**
      * 등록된 정보를 변경한다.
      *
@@ -48,6 +65,7 @@ public class MeetingRoomController {
      */
     @PostMapping(value="/modify", consumes = "application/json")
     public @ResponseBody String modifyRecord(@RequestBody BookingRequestParam param) throws Exception {
+        checkParameter(param);
         meetingRoomService.modifyRoomParam(param);
         return StringUtils.EMPTY;
     }
@@ -112,7 +130,7 @@ public class MeetingRoomController {
      * 회의실 목록 조회
      * @return
      */
-    @GetMapping(value="/select/meeting-room")
+    @GetMapping(value="select/meeting-room")
     public @ResponseBody List<MeetingRoom> getMeetingRoomList() {
         return meetingRoomService.getMeetingRoomList();
     }

@@ -59,7 +59,7 @@ public class MeetingRoomService {
             }
         }
         if ( timeTableRepository.count() == 0 ) {
-            for ( int i = 0; i < 47; i++ ) {
+            for ( int i = 0; i < 48; i++ ) {
                 timeTableRepository.save(
                         new TimeTable(i, getTimeFormat(i), (i*30)+"분")
                 );
@@ -123,7 +123,7 @@ public class MeetingRoomService {
         List<DailyBookingStatus> dailyBookingStatus = createDailyBookingFromParam(insertedParam);
         if ( containDuplicatedBooking(dailyBookingStatus) ) {
             bookingParamRepository.delete(insertedParam);
-            throw new ConflictedTimeException("Duplicated Booking item SHOULD NOT exist.");
+            throw new ConflictedTimeException("중복된 예약이 존재합니다. 다시 선택바랍니다.");
         }
         dailyBookingStatusRepository.saveAll(dailyBookingStatus);
 

@@ -9,7 +9,11 @@ buildscript {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 	}
 }
-
+/*
+plugins {
+	id 'io.franzbecker.gradle-lombok' version '1.14'
+	id 'java'
+}*/
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
@@ -24,7 +28,11 @@ targetCompatibility = '1.8'
 repositories {
 	mavenCentral()
 }
-
+/*
+lombok {
+	sha256 = ""
+}
+*/
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -37,6 +45,9 @@ dependencies {
 	testCompile group: 'org.mockito', name: 'mockito-core', version:'2.+'
 	testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: '2.23.4'
 	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
+	compile group: 'com.cronutils', name: 'cron-utils', version: '8.0.0'
+// https://mvnrepository.com/artifact/org.quartz-scheduler/quartz
+//	compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.0'
 
 	compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8', version: '2.9.8'
 }

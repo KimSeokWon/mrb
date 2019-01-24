@@ -72,7 +72,6 @@ public class BookingRequestParam implements Serializable {
      *         <caption>매년, 매월 일요일부터 토요일까지 반복한다.</caption>
      *     </table>
      * </p>
-     * @see org.quartz.CronExpression
      */
     @Column(name="CRON_EXPR")
     protected String      cronExpression;
@@ -86,6 +85,27 @@ public class BookingRequestParam implements Serializable {
      */
     @Column(name="MEETING_ROOM_ID")
     protected     Long        meetingRoomId;
+
+    public Date getFromDate() {
+        try {
+            if ( fromDate == null ) {
+                this.fromDate = dateFormat.parse(from);
+            }
+        } catch ( ParseException ex ) {
+            this.fromDate = new Date();
+        }
+        return this.fromDate;
+    }
+    public Date getToDate() {
+        try {
+            if (toDate == null) {
+                this.toDate = dateFormat.parse(to);
+            }
+        } catch ( ParseException ex ) {
+            this.toDate = new Date();
+        }
+        return this.toDate;
+    }
 
     /**
      *
