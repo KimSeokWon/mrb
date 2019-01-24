@@ -59,3 +59,11 @@ public class BookRequestParam {
 %YOUR_PATH%> gradle bootRun 
 ```
 4. 브라우저에서 http://localhost:8080 으로 실행한다.
+
+### 참고사항
+웹소스는 ./mrb-web 에 있다. 해당 디렉토리로 들어가서 
+```aidl
+C:> ng build --prod 
+```
+와 같이 프로덕션 모드로 빌드를 하면 되며, 빌드된 파일은 ```./mrb-web/dist/mrb-web``` 에 존재하며 모든 파일을 ```./src/main/resources/META-INF/resources``` 하위에 복사하면 된다.
+또한, 빌드 하기 위해서는 **node.js**, **@angular/cli** 가 설치되어 있어야 한다.
