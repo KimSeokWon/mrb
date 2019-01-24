@@ -30,6 +30,11 @@ targetCompatibility = '1.8'
 repositories {
 	mavenCentral()
 }
+
+test {
+    useJUnitPlatform()
+}
+
 /*
 lombok {
 	sha256 = ""

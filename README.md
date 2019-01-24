@@ -50,8 +50,12 @@ public class BookRequestParam {
 
 ## 실행 방법
 1. https://github.com/KimSeokWon/mrb.git 에서 소스를 다운 받는다.
-2. 소스를 다운 받은 위치로 이동하여 아래와 같이 빌드 및 실행한다. 
+2. 단위 테스트를 진행한다.
+```aidl
+%YOUR_PATH%> gradle test
+```
+3. 소스를 다운 받은 위치로 이동하여 아래와 같이 빌드 및 실행한다. 
 ```
 %YOUR_PATH%> gradle bootRun 
 ```
-3. 마지막으로 브라우저에서 http://localhost:8080 으로 실행한다.
+4. 브라우저에서 http://localhost:8080 으로 실행한다.
