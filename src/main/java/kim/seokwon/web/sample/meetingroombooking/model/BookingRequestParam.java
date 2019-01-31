@@ -86,6 +86,8 @@ public class BookingRequestParam implements Serializable {
     @Column(name="MEETING_ROOM_ID")
     protected     Long        meetingRoomId;
 
+    protected       String      color;
+
     public Date getFromDate() {
         try {
             if ( fromDate == null ) {
@@ -117,7 +119,7 @@ public class BookingRequestParam implements Serializable {
      * @param desc
      * @param meetingId
      */
-    public BookingRequestParam(Date fromDate, Date toDate, int time, int duration, String expr, String desc, Long meetingId) {
+    public BookingRequestParam(Date fromDate, Date toDate, int time, int duration, String expr, String desc, Long meetingId, String color) {
         this.startTime = time;
         this.duration = duration;
         this.cronExpression = expr;
@@ -125,6 +127,7 @@ public class BookingRequestParam implements Serializable {
         this.meetingRoomId = meetingId;
         this.fromDate = fromDate;
         this.toDate = toDate;
+        this.color = color;
     }
 
     /**
@@ -138,12 +141,13 @@ public class BookingRequestParam implements Serializable {
      * @param meetingId 회의실ID
      * @throws ParseException
      */
-    public BookingRequestParam(String fromDate, String toDate, int time, int duration, String expr, String desc, Long meetingId) throws ParseException {
+    public BookingRequestParam(String fromDate, String toDate, int time, int duration, String expr, String desc, Long meetingId, String color) throws ParseException {
         this.startTime = time;
         this.duration = duration;
         this.cronExpression = expr;
         this.description = desc;
         this.meetingRoomId = meetingId;
+        this.color = color;
         this.fromDate = dateFormat.parse(fromDate);
         this.toDate = dateFormat.parse(toDate);
     }

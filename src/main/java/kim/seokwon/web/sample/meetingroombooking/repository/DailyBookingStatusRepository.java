@@ -35,13 +35,13 @@ public interface DailyBookingStatusRepository extends JpaRepository<DailyBooking
     public List<DailyBookingStatus> getListInDayRange(@Param("fromDate") ZonedDateTime fromDate, @Param("toDate") ZonedDateTime toDate);
 
     @Query(nativeQuery = true, value=
-            "SELECT A.BOOKING_ID, A.BOOK_DT, A.DESC, A.END_TM, A.REQ_ID, A.ROOM_ID, A.START_TM, B.CNT FROM DAILY_BOOK A " +
+            "SELECT A.BOOKING_ID, A.BOOK_DT, A.DESC, A.END_TM, A.REQ_ID, A.ROOM_ID, A.START_TM, A.COLOR, B.CNT FROM DAILY_BOOK A " +
             "INNER JOIN ( " +
             "SELECT COUNT(C.BOOKING_ID) CNT, C.REQ_ID FROM DAILY_BOOK C GROUP BY C.REQ_ID ) B ON A.REQ_ID=B.REQ_ID " +
             "WHERE BOOK_DT = :date")
     public List<DailyBookingStatus> getListByDay(@Param("date") ZonedDateTime date);
 
-    @Query(nativeQuery = true, value= "SELECT * FROM DAILY_BOOK WHERE ROOM_ID = :roomId AND BOOK_DT = :date AND" +
+    @Query(nativeQuery = true, value= "SELECT * FROM DAILY_BOOK WHERE ROOM_ID = :roomId AND BOOK_DT = :date AND " +
             "( (START_TM <= :from AND END_TM >=:to ) OR " +
             "( START_TM >= :from AND END_TM >= :to AND START_TM < :to ) OR " +
             "( START_TM <= :from  AND END_TM > :from AND END_TM <= :to ) OR " +
