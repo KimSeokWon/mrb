@@ -14,6 +14,8 @@ public class BookRequestParam {
   private int startTime;
   // 종료시간
   private int endTime;
+  // 일정표에 나타낼 
+  private Sring color;
 }
 ```
 ### 설명
