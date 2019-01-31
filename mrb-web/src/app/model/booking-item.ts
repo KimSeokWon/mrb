@@ -8,6 +8,7 @@ export class BookingItem {
     public desc: string,
     public requestId: number,
     public roomId: number,
+    public color: string,
     public cnt: number,
   ){}
 }

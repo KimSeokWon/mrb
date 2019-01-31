@@ -5,7 +5,7 @@
 
   <mat-card-content [formGroup]="form">
   <mat-form-field class="full-width">
-    <input matInput [matDatepicker]="startPick"
+    <input matInput [matDatepicker]="startPick" readonly
            placeholder="예약일을 선택하세요."
            formControlName="from" required>
     <mat-datepicker-toggle matSuffix [for]="startPick"></mat-datepicker-toggle>
@@ -53,11 +53,20 @@
   </mat-button-toggle-group>
 
   <mat-form-field class="full-width">
-    <input required matInput [matDatepicker]="finishPicker" placeholder="종료일을 선택하세요." formControlName="to" [value]="form.get('from').value" [min]="form.get('to').value">
+    <input required matInput [matDatepicker]="finishPicker" placeholder="종료일을 선택하세요." readonly formControlName="to" [value]="form.get('from').value" [min]="form.get('to').value">
     <mat-datepicker-toggle matSuffix [for]="finishPicker" ></mat-datepicker-toggle>
     <mat-datepicker  #finishPicker></mat-datepicker>
     <mat-error *ngIf="form.get('from').value > form.get('to').value">시작일보다 크거나 커야 합니다.</mat-error>
   </mat-form-field>
+    <div class="toggle-title">
+      표시될 색상을 선택하세요
+    </div>
+    <mat-button-toggle-group multiple="false" formControlName="color" class="color-sample-group">
+      <mat-button-toggle *ngFor="let color of primary_colors" [value]="color" class="toggle-btn color-rect" [style.background-color]="color">&nbsp;</mat-button-toggle>
+    </mat-button-toggle-group>
+    <mat-icon style="vertical-align: middle;margin-left:5rem;">colorize</mat-icon>
+    <input [colorPicker]="form.get('color').value" (colorPicker)="onColorPicker($event)" [style.background]="form.get('color').value" class="toggle-btn color-rect"/>
+    <mat-divider></mat-divider>
     <label class="error" *ngIf="errorIsShown">{{errorMsg}}</label>
   </mat-card-content>
 <mat-card-actions class="button-group">

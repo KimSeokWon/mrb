@@ -96,9 +96,9 @@ export class ServerProtocolService {
       /*console.error(
         `Backend returned code ${error.status}, ` +
         `body was: ${error.error}`);*/
-      console.log(error.error.message);
+      console.log(error.error);
 
-      return throwError(error.error.message);
+      return (error.error && error.error.message) ? throwError(error.error.message) : throwError('Server Error');
 
     }
     // return an observable with a user-facing error message

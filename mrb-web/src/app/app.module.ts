@@ -7,15 +7,14 @@ import {LoggerModule, NgxLoggerLevel} from "ngx-logger";
 import {MaterialModule} from "./material.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
-import {DailyCalendarComponent} from "./daily-calendar/daily-calendar.component";
 import {ServerProtocolService} from "./service/server-protocol.service";
 import {CalTableComponent} from "./cal-table/cal-table.component";
 import {BookDialogComponent} from "./book-dialog/book-dialog.component";
+import {ColorPickerModule} from "ngx-color-picker";
 
 @NgModule({
   declarations: [
     AppComponent,
-    DailyCalendarComponent,
     CalTableComponent,
     BookDialogComponent
   ],
@@ -27,6 +26,7 @@ import {BookDialogComponent} from "./book-dialog/book-dialog.component";
     MaterialModule,
     LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
     ReactiveFormsModule,
+    ColorPickerModule,
   ],
   providers: [
     ServerProtocolService

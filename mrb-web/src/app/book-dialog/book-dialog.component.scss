@@ -23,4 +23,20 @@
   .error {
     color: red;
   }
+  .color-rect {
+    width: 2rem;
+    height: 1.5rem;
+    margin-left: .3rem;
+    margin-right: .3rem;
+    cursor: pointer;
+  }
+  .color-sample-group {
+    //border: none;
+    padding: .5rem;
+    vertical-align: middle;
+  }
+  input.color-rect {
+    border: none;
+    margin-top:.5rem;
+  }
 }

@@ -37,6 +37,10 @@ export class BookDialogComponent implements OnInit {
     'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'
   ];
 
+  primary_colors: string[] = [
+    '#6200EE', '#03DAC6', '#018786', '#B00020', '#FFED03', '#FF0266'
+  ];
+
   constructor(
     public dialogRef: MatDialogRef<BookDialogComponent>,
     private fb: FormBuilder,
@@ -52,6 +56,7 @@ export class BookDialogComponent implements OnInit {
         tt: [0, Validators.required],
         dur: [0, Validators.required],
         cron: [''],
+        color: ['#6200EE'],
         from: ['', Validators.required],
         to: ['', Validators.required]
       });
@@ -67,6 +72,7 @@ export class BookDialogComponent implements OnInit {
         tt: [data.startTime, Validators.required],
         dur: [data.duration, Validators.required],
         cron: [data.cronExpression ? data.cronExpression.split(' ')[5].split(',') : ''],
+        color: [data.color],
         //from: [moment(data.from, "YYYYMMDD").toDate(), Validators.required],
         from: [new Date(data.fromDate), Validators.required],
         to: [new Date(data.toDate), Validators.required]
@@ -95,6 +101,7 @@ export class BookDialogComponent implements OnInit {
         ((this.form.get('from').value == this.form.get('to').value) || !this.form.get('to').value)  ? null : "0 0 0 ? * " + this.form.get('cron').value + ' *',
         this.form.get('room').value
       );
+      this.bookingParam.color = this.form.get('color').value;
       //this.logger.debug(JSON.stringify(this.bookingParam));
       this.serverProtocolService.postBookingParam(this.bookingParam).
       subscribe( data => {
@@ -112,6 +119,7 @@ export class BookDialogComponent implements OnInit {
       this.bookingParam.from = this.format(this.form.get('from').value);
       this.bookingParam.to = this.format(this.form.get('to').value  ? this.form.get('to').value : this.form.get('from').value);
       this.bookingParam.description = this.form.get('desc').value;
+      this.bookingParam.color = this.form.get('color').value;
 
       this.serverProtocolService.modifyBooingParam(this.bookingParam).subscribe( data => {
         this.openSuccess('Success to modify');
@@ -151,6 +159,9 @@ export class BookDialogComponent implements OnInit {
     return [date.getFullYear()
       , ('0' + ( date.getMonth() + 1)).slice(-2)
       , ('0' + ( date.getDate())).slice(-2)].join('');
+  }
+  onColorPicker(event: any) {
+      console.log(event);
   }
 }
 
