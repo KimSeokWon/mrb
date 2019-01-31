@@ -1,0 +1,37 @@
+<div *ngIf="!started">
+  서비스를 시작합니다.
+</div>
+<div *ngIf="started">
+  <mat-card>
+    <mat-card-header>
+      시간, 회의실의 초기값을 설정하세요.
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field>
+        <mat-select placeholder="시작 시간을 선택하세요." formControl="startControl">
+          <mat-option *ngFor="let t of timeObj" [value]="t.timeIndex">
+            {{t.timeString}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field> -
+      <mat-form-field>
+        <mat-select placeholder="종료 시간을 선택하세요." >
+          <mat-option *ngFor="let t of timeObj" [value]="t.timeIndex" [disabled]="startControl.value >= t.timeIndex">
+            {{t.timeString}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <mat-form-field>
+        <mat-select placeholder="회의실 갯수를 선택하세요." >
+          <mat-option *ngFor="let i of room_count" [value]="i" >
+            {{i}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-footer>
+      <button mat-button>SUBMIT</button> <button mat-button>RESET</button>
+    </mat-card-footer>
+  </mat-card>
+</div>

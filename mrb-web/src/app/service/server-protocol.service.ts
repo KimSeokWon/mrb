@@ -86,6 +86,13 @@ export class ServerProtocolService {
     return this.http.delete<BookingParam>(this.makeBaseURL() + '/remove/' + reqId, httpGetOption).pipe(catchError(this.handleError));
   }
 
+  public getInitStatus(): Observable<number> {
+    return this.http.get<number>(this.makeBaseURL() + '/check-status', httpGetOption).pipe(
+        map(data => data.status)
+    );
+  }
+
+
   public handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
@@ -105,4 +112,5 @@ export class ServerProtocolService {
     return throwError(
       'Something bad happened; please try again later.');
   };
+
 }

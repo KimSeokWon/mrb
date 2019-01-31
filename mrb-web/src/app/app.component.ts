@@ -1,8 +1,9 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, Inject, ViewChild} from '@angular/core';
 import {MatDialog} from "@angular/material";
 import {BookDialogComponent} from "./book-dialog/book-dialog.component";
 import {NGXLogger} from "ngx-logger";
 import {CalTableComponent} from "./cal-table/cal-table.component";
+import {ServerProtocolService} from "./service/server-protocol.service";
 
 @Component({
   selector: 'app-root',
@@ -13,11 +14,12 @@ export class AppComponent {
   title = 'mrb-web';
   addButtonTitle = 'book a room';
 
+
   @ViewChild(CalTableComponent) private tableComponent: CalTableComponent;
 
   constructor(
     public dialog: MatDialog,
-    public logger: NGXLogger
+    public logger: NGXLogger,
   ) {
 
   }
