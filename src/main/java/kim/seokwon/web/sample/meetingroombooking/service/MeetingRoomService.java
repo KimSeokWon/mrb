@@ -6,6 +6,7 @@ import com.cronutils.model.definition.CronDefinitionBuilder;
 import com.cronutils.model.time.ExecutionTime;
 import com.cronutils.parser.CronParser;
 import kim.seokwon.web.sample.meetingroombooking.ConflictedTimeException;
+import kim.seokwon.web.sample.meetingroombooking.MRBConst;
 import kim.seokwon.web.sample.meetingroombooking.model.*;
 import kim.seokwon.web.sample.meetingroombooking.repository.DailyBookingStatusRepository;
 import kim.seokwon.web.sample.meetingroombooking.repository.MeetingRoomRepository;
@@ -29,8 +30,13 @@ import java.util.*;
 
 @Service
 @Slf4j
-public class MeetingRoomService {
+public class MeetingRoomService implements MRBConst {
 
+    /**
+     * 시스템의 초기 상태를 나타냄.
+     * @see MRBConst
+     */
+    private static int SYSTEM_STATUS = 0;
     private final   DailyBookingStatusRepository        dailyBookingStatusRepository;
     private final   MeetingRoomRepository               meetingRoomRepository;
     private final   BookingParamRepository              bookingParamRepository;
@@ -49,22 +55,48 @@ public class MeetingRoomService {
         this.timeTableRepository            = timeTableRepository;
     }
 
-    @PostConstruct
-    public void setUp() {
+    public int getStatus() {
+        return SYSTEM_STATUS;
+    }
 
+    @PostConstruct
+    private void checkDataBase() {
         if ( meetingRoomRepository.count() == 0) {
-            log.info("초기화: 회의실 목록 삽입");
-            for ( int i = 0 ;i < 10 ; i++ ) {
-                registerMeetingRoom(new MeetingRoom("회의실 " + (char)('A' + i)));
-            }
+            SYSTEM_STATUS = NOT_YET_INIT;
+        } else if ( timeTableRepository.count() == 0 ) {
+            SYSTEM_STATUS = NOT_YET_INIT;
+        } else {
+            SYSTEM_STATUS = FINISH_INIT;
         }
-        if ( timeTableRepository.count() == 0 ) {
-            for ( int i = 0; i < 48; i++ ) {
-                timeTableRepository.save(
-                        new TimeTable(i, getTimeFormat(i), (i*30)+"분")
-                );
-            }
+    }
+
+    public synchronized int initDatabase(InitParam param) {
+        if ( SYSTEM_STATUS > NOT_YET_INIT) {
+            return SYSTEM_STATUS;
         }
+        if ( SYSTEM_STATUS == NOT_YET_INIT ) {
+            SYSTEM_STATUS = 1;
+        }
+        try {
+            if ( meetingRoomRepository.count() == 0) {
+                log.info("초기화: 회의실 목록 삽입");
+                for ( int i = 0 ;i < param.getCount() ; i++ ) {
+                    registerMeetingRoom(new MeetingRoom("회의실 " + (char)('A' + i)));
+                }
+            }
+            if ( timeTableRepository.count() == 0 ) {
+                for ( int i = 0; i < ( param.getEndHour() - param.getStartHour() + 1); i++ ) {
+                    timeTableRepository.save(
+                            new TimeTable(i, getTimeFormat(i + param.getStartHour()), (i*30)+"분")
+                    );
+                }
+            }
+        } catch ( Exception ex ) {
+            SYSTEM_STATUS = ERROR_TO_INIT;
+            return SYSTEM_STATUS;
+        }
+        SYSTEM_STATUS = FINISH_INIT;
+        return SYSTEM_STATUS;
     }
 
     private final static String getTimeFormat(int tm) {
@@ -160,7 +192,8 @@ public class MeetingRoomService {
                         param.getStartTime() + param.getDuration(),
                         param.getDescription(),
                         param.getRequestId(),
-                        param.getMeetingRoomId()));
+                        param.getMeetingRoomId(),
+                        param.getColor()));
                 targetDate = executionTime.nextExecution(targetDate).get();
             }
 

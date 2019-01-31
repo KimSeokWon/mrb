@@ -49,7 +49,7 @@ class MeetingRoomServiceTest {
                     3,
                     null,
                     "테스트회의",
-                    1L);
+                    1L, "#FFF");
             meetingRoomService.registerRoomParam(param);
             List<DailyBookingStatus> map = meetingRoomService.getBookingStatusByDay("20190101");
             Assertions.assertEquals(1, map.size());
@@ -70,7 +70,7 @@ class MeetingRoomServiceTest {
                                 3,
                                 null,
                                 "테스트회의1",
-                                1L));
+                                1L, "#FFF"));
                     });
         Assertions.assertDoesNotThrow(() -> {
             List<DailyBookingStatus> map = meetingRoomService.getBookingStatusByDay("20190101");
@@ -84,7 +84,7 @@ class MeetingRoomServiceTest {
                                 3,
                                 null,
                                 "테스트회의2",
-                                1L));
+                                1L, "#FFF"));
                     });
         Assertions.assertDoesNotThrow(() -> {
             List<DailyBookingStatus> map = meetingRoomService.getBookingStatusByDay("20190101");
@@ -103,7 +103,7 @@ class MeetingRoomServiceTest {
                     3,
                     null,
                     "테스트회의1",
-                    1L));
+                    1L, "#FFF"));
         });
 
         Assertions.assertThrows(ConflictedTimeException.class, () -> {
@@ -114,7 +114,7 @@ class MeetingRoomServiceTest {
                             3,
                             null,
                             "테스트회의2",
-                            1L));
+                            1L, "#FFF"));
                 }
             );
         Assertions.assertDoesNotThrow(() -> {
@@ -133,7 +133,7 @@ class MeetingRoomServiceTest {
                     3,
                     "0 0 0 ? * MON *",
                     "월요일 회의",
-            2L));
+            2L, "#FFF"));
         });
 
         Assertions.assertDoesNotThrow(() -> {
@@ -156,7 +156,7 @@ class MeetingRoomServiceTest {
                     3,
                     "0 0 0 ? * MON *",
                     "월요일 회의",
-                    2L));
+                    2L, "#FFF"));
         });
         Assertions.assertThrows(ConflictedTimeException.class, () -> {
                     meetingRoomService.registerRoomParam(new BookingRequestParam(
@@ -166,7 +166,7 @@ class MeetingRoomServiceTest {
                             3,
                             null,
                             "테스트회의2",
-                            2L));
+                            2L, "#FFF"));
                 }
         );
     }
@@ -181,7 +181,8 @@ class MeetingRoomServiceTest {
                     3,
                     "0 0 0 ? * MON *",
                     "월요일 회의",
-                    2L));
+                    2L,
+                    "#FFF"));
         });
         Assertions.assertThrows(ConflictedTimeException.class, () -> {
                     meetingRoomService.registerRoomParam(new BookingRequestParam(
@@ -191,7 +192,8 @@ class MeetingRoomServiceTest {
                             3,
                             null,
                             "테스트회의2",
-                            2L));
+                            2L,
+                            "#FFF"));
                 }
         );
     }
@@ -206,7 +208,8 @@ class MeetingRoomServiceTest {
                     3,
                     "0 0 0 ? * MON *",
                     "월요일 회의",
-                    2L));
+                    2L,
+                    "#FFF"));
         });
         Assertions.assertDoesNotThrow(() -> {
                     meetingRoomService.registerRoomParam(new BookingRequestParam(
@@ -216,7 +219,8 @@ class MeetingRoomServiceTest {
                             3,
                             null,
                             "테스트회의2",
-                            2L));
+                            2L,
+                            "#FFF"));
                 }
         );
         Assertions.assertDoesNotThrow(() -> {
@@ -234,7 +238,8 @@ class MeetingRoomServiceTest {
                     3,
                     "0 0 0 ? * MON *",
                     "월요일 회의",
-                    2L
+                    2L,
+                    "#FFF"
             ));
         });
         Assertions.assertDoesNotThrow(() -> {

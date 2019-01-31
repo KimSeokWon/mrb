@@ -1,5 +1,7 @@
 package kim.seokwon.web.sample.meetingroombooking.controller;
 
+import kim.seokwon.web.sample.meetingroombooking.InitializeException;
+import kim.seokwon.web.sample.meetingroombooking.MRBConst;
 import kim.seokwon.web.sample.meetingroombooking.model.*;
 import kim.seokwon.web.sample.meetingroombooking.service.MeetingRoomService;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.security.InvalidParameterException;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -37,6 +40,7 @@ public class MeetingRoomController {
     @PostMapping(value="/create", consumes = "application/json")
     public @ResponseBody
     BookingRequestParam createRecord(@RequestBody BookingRequestParam param) throws Exception {
+        checkSystemStatus();
         checkParameter(param);
         return meetingRoomService.registerRoomParam(param);
     }
@@ -67,6 +71,7 @@ public class MeetingRoomController {
      */
     @PostMapping(value="/modify", consumes = "application/json")
     public @ResponseBody String modifyRecord(@RequestBody BookingRequestParam param) throws Exception {
+        checkSystemStatus();
         checkParameter(param);
         meetingRoomService.modifyRoomParam(param);
         return StringUtils.EMPTY;
@@ -81,6 +86,7 @@ public class MeetingRoomController {
     @GetMapping(value="/select/day/{date}")
     public @ResponseBody List<DailyBookingStatus> getDailyBookingInfoByDay( @PathVariable(name = "date") String date)
             throws Exception {
+        checkSystemStatus();
         return meetingRoomService.getBookingStatusByDay(date);
     }
 
@@ -98,6 +104,7 @@ public class MeetingRoomController {
             @PathVariable(name = "toDate") String toDate,
             @PathVariable(name="id") String id)
             throws Exception {
+        checkSystemStatus();
         return meetingRoomService.getBookingStatusByDayRange(fromDate, toDate, id);
     }
 
@@ -108,13 +115,14 @@ public class MeetingRoomController {
      */
     @GetMapping(value="/select/{date}")
     public @ResponseBody List<DailyBookingStatus> getBookingInfoByDay(@PathVariable(name="date") String date) throws Exception {
+        checkSystemStatus();
         return meetingRoomService.getBookingStatusByDay(date);
 
     }
 
     @DeleteMapping(value="/remove/{id}")
-    public void removeBookingInfo(@PathVariable(name="id") String id) {
-
+    public void removeBookingInfo(@PathVariable(name="id") String id) throws InitializeException {
+        checkSystemStatus();
         meetingRoomService.removeRoomParam(Long.parseLong(id));
     }
 
@@ -125,6 +133,7 @@ public class MeetingRoomController {
      */
     @GetMapping(value="/select/detail/{id}")
     public @ResponseBody Optional<? extends BookingRequestParam> getBookingParam(@PathVariable(name="id") String id) throws Exception {
+        checkSystemStatus();
         return meetingRoomService.getBookingParam(Long.parseLong(id));
     }
 
@@ -133,7 +142,8 @@ public class MeetingRoomController {
      * @return
      */
     @GetMapping(value="select/meeting-room")
-    public @ResponseBody List<MeetingRoom> getMeetingRoomList() {
+    public @ResponseBody List<MeetingRoom> getMeetingRoomList()  throws InitializeException{
+        checkSystemStatus();
         return meetingRoomService.getMeetingRoomList();
     }
 
@@ -142,7 +152,34 @@ public class MeetingRoomController {
      * @return
      */
     @GetMapping(value="/select/time-table")
-    public @ResponseBody List<TimeTable> getTimeTable() {
+    public @ResponseBody List<TimeTable> getTimeTable() throws InitializeException {
+        checkSystemStatus();
         return meetingRoomService.getTimeTable();
+    }
+
+    /**
+     * 초기화 상태 코드를 얻는다
+     * @see kim.seokwon.web.sample.meetingroombooking.MRBConst
+     * @return 초기 상태 코드값
+     */
+    @GetMapping(value="/check-status")
+    public @ResponseBody InitStatus getInitStatus() {
+        return new InitStatus(meetingRoomService.getStatus());
+    }
+
+    /**
+     * 데이터베이스를 초기화 한다.
+     * @param param 초기화 파라미터
+     * @return 초기 상태 코드
+     */
+    @PostMapping(value="/init", consumes = "application/json")
+    public @ResponseBody int init(@RequestBody InitParam param) {
+        return meetingRoomService.initDatabase(param);
+    }
+
+    private void checkSystemStatus() throws InitializeException {
+        if ( meetingRoomService.getStatus() != MRBConst.FINISH_INIT ) {
+            throw new InitializeException(meetingRoomService.getStatus());
+        }
     }
 }

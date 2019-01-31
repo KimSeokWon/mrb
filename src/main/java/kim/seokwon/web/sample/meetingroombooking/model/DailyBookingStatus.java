@@ -56,14 +56,17 @@ public class DailyBookingStatus implements Serializable {
     @Column(name="ROOM_ID")
     private Long        roomId;
 
+    private String      color;
     private int         cnt;
 
-    public DailyBookingStatus(ZonedDateTime date, int startTime, int endTime, String desc, Long requestId, Long roomId) {
+
+    public DailyBookingStatus(ZonedDateTime date, int startTime, int endTime, String desc, Long requestId, Long roomId, String color) {
         this.date           = date;
         this.startTime      = startTime;
         this.endTime        = endTime;
         this.desc           = desc;
         this.requestId      = requestId;
         this.roomId         = roomId;
+        this.color          = color;
     }
 }
