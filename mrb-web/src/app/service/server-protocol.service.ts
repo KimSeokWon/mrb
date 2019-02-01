@@ -7,6 +7,7 @@ import {Observable, throwError, of} from "rxjs";
 import {TimeTable} from "../model/time-table";
 import {BookingParam} from "../model/booking-param";
 import {catchError, map, tap} from "rxjs/operators";
+import {InitParam} from "../model/init-param";
 
 
 const httpPostOption = {
@@ -20,9 +21,7 @@ const httpPostOption = {
 
 const httpGetOption = {
   headers: new HttpHeaders({
-    'Access-Control-Allow-Origin' : 'http://localhost:8080',
-    'Access-Control-Allow-Methods' : 'GET, POST, DELETE',
-    'Access-Control-Allow-Credentials': 'true'
+    'Access-Control-Allow-Origin': 'http://localhost:8080',
   })
 }
 
@@ -86,12 +85,14 @@ export class ServerProtocolService {
     return this.http.delete<BookingParam>(this.makeBaseURL() + '/remove/' + reqId, httpGetOption).pipe(catchError(this.handleError));
   }
 
-  public getInitStatus(): Observable<number> {
-    return this.http.get<number>(this.makeBaseURL() + '/check-status', httpGetOption).pipe(
-        map(data => data.status)
-    );
+  public getInitStatus(): Observable<any> {
+    return this.http.get(this.makeBaseURL() + '/check-status', );
   }
-
+  public sendInitParam(param: InitParam): void {
+    this.http.post<InitParam>(
+        this.makeBaseURL() + '/init', param, httpPostOption
+    ).pipe(catchError(this.handleError));
+  }
 
   public handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

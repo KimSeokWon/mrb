@@ -11,12 +11,14 @@ import {ServerProtocolService} from "./service/server-protocol.service";
 import {CalTableComponent} from "./cal-table/cal-table.component";
 import {BookDialogComponent} from "./book-dialog/book-dialog.component";
 import {ColorPickerModule} from "ngx-color-picker";
+import {InitComponent} from "./init/init.component";
 
 @NgModule({
   declarations: [
     AppComponent,
+      InitComponent,
     CalTableComponent,
-    BookDialogComponent
+    BookDialogComponent,
   ],
   imports: [
     BrowserModule,
