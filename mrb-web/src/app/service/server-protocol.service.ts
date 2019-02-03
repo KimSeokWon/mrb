@@ -88,8 +88,8 @@ export class ServerProtocolService {
   public getInitStatus(): Observable<any> {
     return this.http.get(this.makeBaseURL() + '/check-status', );
   }
-  public sendInitParam(param: InitParam): void {
-    this.http.post<InitParam>(
+  public sendInitParam(param: InitParam): Observable<any> {
+    return this.http.post<InitParam>(
         this.makeBaseURL() + '/init', param, httpPostOption
     ).pipe(catchError(this.handleError));
   }
