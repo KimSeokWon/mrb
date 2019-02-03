@@ -12,11 +12,13 @@ import kim.seokwon.web.sample.meetingroombooking.repository.DailyBookingStatusRe
 import kim.seokwon.web.sample.meetingroombooking.repository.MeetingRoomRepository;
 import kim.seokwon.web.sample.meetingroombooking.repository.BookingParamRepository;
 import kim.seokwon.web.sample.meetingroombooking.repository.TimeTableRepository;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
@@ -44,6 +46,7 @@ public class MeetingRoomService implements MRBConst {
 
     private final static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd" );
 
+
     @Autowired
     public MeetingRoomService(DailyBookingStatusRepository     dailyBookingStatusRepository,
                               MeetingRoomRepository            meetingRoomRepository,
@@ -56,6 +59,7 @@ public class MeetingRoomService implements MRBConst {
     }
 
     public int getStatus() {
+
         return SYSTEM_STATUS;
     }
 

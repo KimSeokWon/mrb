@@ -8,9 +8,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import reactor.core.publisher.Flux;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.security.InvalidParameterException;
+import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
@@ -166,6 +170,7 @@ public class MeetingRoomController {
     public @ResponseBody InitStatus getInitStatus() {
         return new InitStatus(meetingRoomService.getStatus());
     }
+
 
     /**
      * 데이터베이스를 초기화 한다.
