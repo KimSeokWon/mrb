@@ -51,6 +51,7 @@ export class InitComponent implements OnInit{
             if ( data.status === 9 ) {
                 this.router.navigateByUrl('/main', {skipLocationChange: false});
             } else {
+                this.serverProtocolService.resetStorage();
                 this.systemState = data;
                 this.started = true;
             }
