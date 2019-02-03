@@ -38,6 +38,11 @@ export class ServerProtocolService {
     return environment.server.protocol + '://' + environment.server.hostname + ':' + environment.server.port + environment.server.basePath;
   }
 
+  resetStorage(): void {
+      localStorage.clear();
+  }
+
+
   getMeetingRooms(): Observable<MeetingRoom[]> {
     if ( localStorage.getItem("meeting-room") ) {
         return of(JSON.parse(localStorage.getItem("meeting-room")));
