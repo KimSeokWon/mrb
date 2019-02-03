@@ -1,9 +1,11 @@
 import {Component, Inject, ViewChild} from '@angular/core';
-import {MatDialog} from "@angular/material";
-import {BookDialogComponent} from "./book-dialog/book-dialog.component";
-import {NGXLogger} from "ngx-logger";
-import {CalTableComponent} from "./cal-table/cal-table.component";
-import {ServerProtocolService} from "./service/server-protocol.service";
+import {MatDialog} from '@angular/material';
+import {BookDialogComponent} from './book-dialog/book-dialog.component';
+import {NGXLogger} from 'ngx-logger';
+import {CalTableComponent} from './cal-table/cal-table.component';
+import {ServerProtocolService} from './service/server-protocol.service';
+import {ActivatedRoute, ActivatedRouteSnapshot, UrlSegment} from '@angular/router';
+import {ToolbarService} from './service/toolbar-service';
 
 @Component({
   selector: 'app-root',
@@ -13,15 +15,19 @@ import {ServerProtocolService} from "./service/server-protocol.service";
 export class AppComponent {
   title = 'mrb-web';
   addButtonTitle = 'book a room';
-
+  showAddButon: boolean = true;
 
   @ViewChild(CalTableComponent) private tableComponent: CalTableComponent;
 
   constructor(
     public dialog: MatDialog,
+    @Inject(ToolbarService) private toolbarService,
     public logger: NGXLogger,
   ) {
-
+    this.toolbarService.disableRegisterAsObservable().subscribe( u => {
+      this.logger.debug('toolbar flag :' + u);
+      this.showAddButon = !u;
+    });
   }
 
   openBookPopup(): void {
@@ -34,6 +40,6 @@ export class AppComponent {
       if ( result !== 'cancel' ) {
         this.tableComponent.loadData();
       }
-    })
+    });
   }
 }

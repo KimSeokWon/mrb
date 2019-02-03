@@ -9,6 +9,7 @@ import {BookingItem} from "../model/booking-item";
 import {map} from "rxjs/operators";
 import {BookDialogComponent} from "../book-dialog/book-dialog.component";
 import {MatDialog} from "@angular/material";
+import {ToolbarService} from '../service/toolbar-service';
 
 @Component({
   selector: 'app-cal-table',
@@ -24,8 +25,11 @@ export class CalTableComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     @Inject(ServerProtocolService) private serverProtocolService,
+    @Inject(ToolbarService) private toolbarService,
     private logger: NGXLogger
-  ){}
+  ){
+    this.toolbarService.disableRegister = false;
+  }
   ngOnInit() {
 
     let meetingRoom = this.serverProtocolService.getMeetingRooms();

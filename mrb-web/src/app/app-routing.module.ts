@@ -5,7 +5,7 @@ import {InitComponent} from "./init/init.component";
 
 const routes: Routes = [
   {path: 'main', component: CalTableComponent},
-  {path: '**', component: InitComponent}
+  {path: '', component: InitComponent}
 ];
 
 @NgModule({

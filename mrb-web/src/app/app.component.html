@@ -24,7 +24,7 @@
   <div class="title">
     Meeting Room Booking Service
   </div>
-  <button mat-icon-button (click)="openBookPopup()">
+  <button mat-icon-button (click)="openBookPopup()" *ngIf="showAddButon">
     <mat-icon aria-label="Book a room">create</mat-icon>
     {{addButtonTitle|uppercase}}
   </button>
