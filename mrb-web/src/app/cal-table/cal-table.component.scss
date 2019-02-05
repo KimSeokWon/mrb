@@ -10,6 +10,11 @@
       border: 1px solid dimgray;
     }
   }
+  tr.even  {
+    td, th {
+      border-bottom: 1px solid lightgray;
+    }
+  }
 }
 table {
   border: 0;
