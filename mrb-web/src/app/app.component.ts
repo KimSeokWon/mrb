@@ -15,7 +15,7 @@ import {ToolbarService} from './service/toolbar-service';
 export class AppComponent {
   title = 'mrb-web';
   addButtonTitle = 'book a room';
-  showAddButon: boolean = true;
+  showAddButon = true;
 
   @ViewChild(CalTableComponent) private tableComponent: CalTableComponent;
 
@@ -38,7 +38,7 @@ export class AppComponent {
     });
     dialogRef.afterClosed().subscribe( result => {
       if ( result !== 'cancel' ) {
-        this.tableComponent.loadData();
+        this.toolbarService.reload = true;
       }
     });
   }

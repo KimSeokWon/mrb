@@ -29,6 +29,11 @@ export class CalTableComponent implements OnInit {
     private logger: NGXLogger
   ){
     this.toolbarService.disableRegister = false;
+    this.toolbarService.reloadAsObservable().subscribe( res => {
+        if ( res ) {
+            this.loadData();
+        }
+    });
   }
   ngOnInit() {
 
@@ -51,10 +56,10 @@ export class CalTableComponent implements OnInit {
     this.serverProtocolService.getBookingList(date).subscribe( data => {
       this.resetData();
       data.forEach( (item: BookingItem) => {
-        for ( let i = item.startTime; i<= item.endTime; i++ ) {
+        for ( let i = item.startTime; i < item.endTime; i++ ) {
           this.dataSource[i][item.roomId] = item;
         }
-      })
+      });
     });
   }
   resetData() {

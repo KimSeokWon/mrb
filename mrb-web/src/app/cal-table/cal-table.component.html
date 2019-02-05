@@ -22,7 +22,8 @@
         <th [id]="time.time">
           {{time.time %2 == 0 ? time.timeValue: ''}}
         </th>
-        <td  *ngFor="let room of meetingRoom" [style.background-color]="dataSource[time.time][room.meetingRoomId] != null ? dataSource[time.time][room.meetingRoomId].color : '#fff'" [ngClass]="(dataSource[time.time][room.meetingRoomId] != null ? 'fill-booking' : 'none-booking')"
+        <td  *ngFor="let room of meetingRoom" [style.background-color]="dataSource[time.time][room.meetingRoomId] != null ? dataSource[time.time][room.meetingRoomId].color : '#fff'"
+             [ngClass]="(dataSource[time.time][room.meetingRoomId] != null ? 'fill-booking' : 'none-booking')"
           (click)="openModifyWindow(dataSource[time.time][room.meetingRoomId])">
           <div>
           {{(dataSource[time.time][room.meetingRoomId]?.startTime == time.time) ? dataSource[time.time][room.meetingRoomId].desc : ' '}}
