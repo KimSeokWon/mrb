@@ -33,7 +33,7 @@
         <!--<mat-option *ngFor="let time of timeTable$ | async" [value]="time.time">-->
           <!--{{time.durationValue}}-->
         <!--</mat-option>  -->
-        <mat-option  [value]="time.time" *ngIf="(form.get('tt').value + time.time < 48)">
+        <mat-option  [value]="time.time" *ngIf="(form.get('tt').value + time.time < timeTable.length)">
         {{timeTable[form.get('tt').value+time.time].timeValue}}({{time.durationValue}} )
         </mat-option>
       </ng-container>
