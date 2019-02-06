@@ -1,6 +1,8 @@
 package kim.seokwon.web.sample.meetingroombooking.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 초기 파라미터를 세팅한다.
@@ -8,7 +10,7 @@ import lombok.Data;
  *   시작시간, 종료시간, 회의실 수
  * </p>
  */
-@Data
+@Data @AllArgsConstructor @NoArgsConstructor
 public class InitParam {
     /**
      * 0 부터 47 까지 가질 수 있다.

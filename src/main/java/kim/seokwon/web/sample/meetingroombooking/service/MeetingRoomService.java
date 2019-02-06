@@ -64,13 +64,30 @@ public class MeetingRoomService implements MRBConst {
     }
 
     @PostConstruct
-    private void checkDataBase() {
+    protected void checkDataBase() {
         if ( meetingRoomRepository.count() == 0) {
             SYSTEM_STATUS = NOT_YET_INIT;
         } else if ( timeTableRepository.count() == 0 ) {
             SYSTEM_STATUS = NOT_YET_INIT;
         } else {
             SYSTEM_STATUS = FINISH_INIT;
+        }
+    }
+    @Transactional
+    void resetBaseCodes() {
+        try {
+            SYSTEM_STATUS = NOT_YET_INIT;
+            meetingRoomRepository.deleteAllInBatch();
+            assert meetingRoomRepository.count() == 0;
+            timeTableRepository.deleteAllInBatch();
+            assert timeTableRepository.count() == 0;
+        }
+        catch ( AssertionError ex ) {
+            System.err.println("meeting room count: " + meetingRoomRepository.count());
+            System.err.println("timetable count: " + timeTableRepository.count());
+            log.debug("meeting room count: {}", meetingRoomRepository.count());
+            log.debug("timetable count: {}", timeTableRepository.count());
+            throw ex;
         }
     }
 
@@ -82,19 +99,20 @@ public class MeetingRoomService implements MRBConst {
             SYSTEM_STATUS = 1;
         }
         try {
-            if ( meetingRoomRepository.count() == 0) {
-                log.info("초기화: 회의실 목록 삽입");
-                for ( int i = 0 ;i < param.getCount() ; i++ ) {
-                    registerMeetingRoom(new MeetingRoom("회의실 " + (char)('A' + i)));
-                }
+            //init databases
+            resetBaseCodes();
+
+            log.info("초기화: 회의실 목록 삽입");
+            for ( int i = 0 ;i < param.getCount() ; i++ ) {
+                registerMeetingRoom(new MeetingRoom("회의실 " + (char)('A' + i)));
             }
-            if ( timeTableRepository.count() == 0 ) {
-                for ( int i = 0; i < ( param.getEndHour() - param.getStartHour() + 1); i++ ) {
-                    timeTableRepository.save(
-                            new TimeTable(i, getTimeFormat(i + param.getStartHour()), (i*30)+"분")
-                    );
-                }
+            log.info("초기화: 회의실 기본 사용시간 목록 삽입");
+            for ( int i = 0; i < ( param.getEndHour() - param.getStartHour() + 1); i++ ) {
+                timeTableRepository.save(
+                        new TimeTable(i, getTimeFormat(i + param.getStartHour()), (i*30)+"분")
+                );
             }
+
         } catch ( Exception ex ) {
             SYSTEM_STATUS = ERROR_TO_INIT;
             return SYSTEM_STATUS;

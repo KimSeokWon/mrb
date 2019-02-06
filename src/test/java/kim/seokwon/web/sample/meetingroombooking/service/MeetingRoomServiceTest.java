@@ -1,8 +1,10 @@
 package kim.seokwon.web.sample.meetingroombooking.service;
 
 import kim.seokwon.web.sample.meetingroombooking.ConflictedTimeException;
+import kim.seokwon.web.sample.meetingroombooking.MRBConst;
 import kim.seokwon.web.sample.meetingroombooking.model.BookingRequestParam;
 import kim.seokwon.web.sample.meetingroombooking.model.DailyBookingStatus;
+import kim.seokwon.web.sample.meetingroombooking.model.InitParam;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,6 +33,10 @@ class MeetingRoomServiceTest {
     @BeforeEach
     public void init() {
         try {
+            meetingRoomService.resetBaseCodes();
+            meetingRoomService.initDatabase(new InitParam(
+                    20, 30, 10
+            ));
             meetingRoomService.deleteBookinParam();
             meetingRoomService.deleteBookingStatus();
         } catch ( Exception ex ) {
@@ -40,7 +46,7 @@ class MeetingRoomServiceTest {
 
     @Test
     @DisplayName("단일 회의실 예약")
-    void registerRoomParam() {
+    void shouldSuccessToRegisterOneBooking() {
         try {
             final BookingRequestParam param = new BookingRequestParam(
                     "20190101",
@@ -262,5 +268,18 @@ class MeetingRoomServiceTest {
                });
            });
         });
+    }
+
+    @Test
+    @DisplayName("디비 초기화 후 상태 확인")
+    public void shouldSuccessToGetInitState() {
+        meetingRoomService.resetBaseCodes();
+        Assertions.assertEquals(MRBConst.NOT_YET_INIT, meetingRoomService.getStatus());
+    }
+
+    @Test
+    @DisplayName("초기 파라미터 입력 후 상태 확인")
+    public void shouldSuccessToGetNotInitAfterInsertInitParams() {
+        Assertions.assertEquals(MRBConst.FINISH_INIT, meetingRoomService.getStatus());
     }
 }
